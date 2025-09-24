@@ -1,57 +1,81 @@
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from wordcloud import WordCloud
-import re
+# 🌍 CO₂ Emissions Analysis App
 
-st.title("CORD-19 Data Explorer")
-st.write("Interactive exploration of COVID-19 research papers (sampled data).")
+An interactive **Streamlit web app** for exploring CO₂ emissions across African countries.  
+This project uses a reduced sample dataset (`metadata_small.csv`) for faster loading and smoother analysis.
 
-# Load reduced dataset
-@st.cache_data
-def load_data():
-    df = pd.read_csv('metadata_small.csv')
-    return df
+---
 
-df = load_data()
+## ✨ Features
+- 📊 **Interactive Data Exploration** – filter and view CO₂ emissions by country, sector, and year.
+- 📈 **Visual Insights** – dynamic charts to understand trends and top emitters.
+- 🔎 **Search & Compare** – quickly find country-specific details and compare multiple countries.
 
-# Sidebar Filters
-year_min, year_max = int(df['year'].min()), int(df['year'].max())
-year_range = st.slider("Select Year Range", year_min, year_max, (year_min, year_max))
+---
 
-filtered = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
+## 📂 Project Structure
+Frameworks_Assignment/
+├─ raw_data/ # (Optional) original large dataset
+├─ metadata_small.csv # cleaned & reduced dataset for the app
+├─ app.py # Streamlit web application
+├─ analysis.ipynb # Jupyter analysis notebook
+└─ README.md # this file
 
-st.write(f"### Showing {filtered.shape[0]} papers from {year_range[0]} to {year_range[1]}")
+yaml
+Copy code
 
-# Publications by Year
-st.subheader("Publications by Year")
-year_counts = filtered['year'].value_counts().sort_index()
-fig1, ax1 = plt.subplots()
-sns.barplot(x=year_counts.index, y=year_counts.values, ax=ax1, color='skyblue')
-ax1.set_xlabel('Year')
-ax1.set_ylabel('Number of Papers')
-st.pyplot(fig1)
+---
 
-# Top Journals
-st.subheader("Top 10 Journals")
-top_journals = filtered['journal'].value_counts().head(10)
-fig2, ax2 = plt.subplots()
-sns.barplot(y=top_journals.index, x=top_journals.values, ax=ax2, color='lightgreen')
-ax2.set_xlabel('Number of Papers')
-ax2.set_ylabel('Journal')
-st.pyplot(fig2)
+## ⚡ Quick Start
 
-# Word Cloud of Titles
-st.subheader("Common Words in Titles")
-all_titles = " ".join(filtered['title'].dropna().tolist())
-clean_text = re.sub(r'[^A-Za-z ]', '', all_titles).lower()
-wordcloud = WordCloud(width=900, height=450, background_color='white').generate(clean_text)
-fig3, ax3 = plt.subplots()
-ax3.imshow(wordcloud, interpolation='bilinear')
-ax3.axis('off')
-st.pyplot(fig3)
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/frameworks-assignment.git
+cd frameworks-assignment
+2️⃣ Install dependencies
+(Use a virtual environment if possible)
 
-# Show Sample Data
-st.subheader("Sample of Data")
-st.dataframe(filtered.head(20))
+bash
+Copy code
+pip install -r requirements.txt
+3️⃣ Run the app
+bash
+Copy code
+streamlit run app.py
+Then open your browser and go to 👉 http://localhost:8501
+
+🛠️ Tech Stack
+Tool	Purpose
+Python 3	Programming language
+Pandas	Data manipulation
+Matplotlib / Seaborn	Visualizations
+Streamlit	Web app framework
+
+📊 Dataset
+Name: metadata_small.csv
+
+Source: Reduced sample from the original CORD-19 metadata dataset.
+
+Why Reduced? To improve performance on personal machines while retaining analytical value.
+
+💡 Notes
+The large dataset is optional and stored in raw_data/ (ignored in .gitignore for GitHub).
+
+Always load metadata_small.csv in your code for smooth performance.
+
+👩‍💻 Author
+Faith Jaher
+Data Science & Writing Enthusiast • Girls' Education Activist
+
+“Small steps lead to big impact.”
+
+📜 License
+This project is licensed under the MIT License – feel free to use and modify.
+
+markdown
+Copy code
+
+✅ **How to use:**  
+1. In VS Code, right-click your project folder → **New File** → name it `README.md`.  
+2. Paste the ENTIRE block above.  
+3. Save (`Ctrl+S` / `Cmd+S`).  
+GitHub will render this beautifully with emojis, headings, and tables.
